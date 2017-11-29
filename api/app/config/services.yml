@@ -33,3 +33,7 @@ services:
     # AppBundle\Service\ExampleService:
     #     arguments:
     #         $someArgument: 'some_value'
+
+    adcash.util.serializer:
+        class: AppBundle\Utilities\SerializerUtil
+        public: true
