@@ -1,4 +1,37 @@
 parameters:
     git_dir: .
     bin_dir: vendor/bin
-    tasks: {  }
+    tasks:
+        composer:
+            file: ./composer.json
+            no_check_all: false
+            no_check_lock: false
+            no_check_publish: false
+            with_dependencies: false
+            strict: false
+        phpcsfixer2:
+            allow_risky: true
+            diff: true
+            verbose: true
+            using_cache: true
+            rules:
+                '@Symfony': true
+                declare_strict_types: true
+                binary_operator_spaces: false
+                trailing_comma_in_multiline_array: false
+                yoda_style: false
+                array_syntax:
+                    syntax: long
+                concat_space:
+                    spacing:
+                        one
+        securitychecker:
+            lockfile: ./composer.lock
+            format: ~
+            end_point: ~
+            timeout: ~
+            run_always: false
+        yamllint:
+            ignore_patterns: []
+            object_support: false
+            exception_on_invalid_type: false
