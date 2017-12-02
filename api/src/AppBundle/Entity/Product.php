@@ -50,9 +50,17 @@ class Product
      */
     private $orders;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="discount", type="boolean")
+     */
+    private $discount;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
+        $this->discount = false;
     }
 
     /**
@@ -98,7 +106,7 @@ class Product
      */
     public function setPrice(float $price)
     {
-        $this->price = (int) $price * 100;
+        $this->price = (int) ($price * 100);
 
         return $this;
     }
@@ -121,6 +129,30 @@ class Product
     public function getOrders(): ArrayCollection
     {
         return $this->orders;
+    }
+
+    /**
+     * Set discount.
+     *
+     * @param bool $discount
+     *
+     * @return Product
+     */
+    public function setDiscount(bool $discount)
+    {
+        $this->discount = $discount;
+
+        return $this;
+    }
+
+    /**
+     * Get discount.
+     *
+     * @return bool
+     */
+    public function getDiscount(): bool
+    {
+        return $this->discount;
     }
 }
 
