@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Table(name="user_orders")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserOrderRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class UserOrder
 {
@@ -96,6 +97,26 @@ class UserOrder
         $this->quantity = 0;
         $this->price = 0;
         $this->total = 0;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function onSave()
+    {
+        $this->setDateUpdated(new \DateTime("now"));
+        if ($this->getProduct() instanceof Product) {
+            $total = $this->getPrice() * $this->getQuantity();
+            /**
+             * Discount of 20% must be applied to the total cost of any order
+             * when at least 3 items of "Pepsi Cola" are selected. (see the wireframe)
+             */
+            if ($this->getProduct()->getDiscount() && $this->getQuantity() > 2) {
+                $total *= 0.8;
+            }
+            $this->setTotal($total);
+        }
     }
 
     /**
@@ -206,28 +227,6 @@ class UserOrder
     public function getQuantity(): ?int
     {
         return $this->quantity;
-    }
-
-    /**
-     * Calculate total.
-     *
-     * @return UserOrder
-     */
-    public function calcTotal()
-    {
-        $total = $this->getPrice() * $this->getQuantity();
-
-        /**
-         * Discount of 20% must be applied to the total cost of any order
-         * when at least 3 items of "Pepsi Cola" are selected. (see the wireframe)
-         */
-        if ($this->getProduct()->getDiscount() && $this->getQuantity() > 2) {
-            $total *= 0.8;
-        }
-
-        $this->setTotal($total);
-
-        return $this;
     }
 
     /**

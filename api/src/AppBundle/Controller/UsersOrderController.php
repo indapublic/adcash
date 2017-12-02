@@ -91,8 +91,6 @@ class UsersOrderController extends Controller
             ->setUser($user)
             ->setProduct($product)
             ->setQuantity($quantity)
-            ->setDateUpdated(new \DateTime("now"))
-            ->calcTotal()
         ;
 
         $em->persist($order);
@@ -154,8 +152,6 @@ class UsersOrderController extends Controller
             ->setUser($user)
             ->setProduct($product)
             ->setQuantity($quantity)
-            ->setDateUpdated(new \DateTime("now"))
-            ->calcTotal()
         ;
 
         $em->persist($order);
