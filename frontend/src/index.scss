@@ -1,0 +1,22 @@
+a {
+    color: #4183C4!important;
+    &:hover {
+        color: #FF4747 !important;
+    }
+}
+
+.Orders {
+    padding: 30px;
+    .Buttons {
+        padding-bottom: 10px;
+    }
+}
+
+.Refresh-Button {
+    background-color: #83C441 !important;
+    color: #FFFFFF !important;
+    &:hover {
+        background-color: #FFFFFF !important;
+        color: #83C441 !important;
+    }
+}
