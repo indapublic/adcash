@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * Product
  *
  * @ORM\Table(name="products")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
+ * @ORM\Entity()
  */
 class Product
 {
