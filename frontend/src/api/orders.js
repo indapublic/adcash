@@ -8,13 +8,18 @@ export default class HistoryApi extends Api {
 	 * Load orders.
 	 */
 	loadOrders = async (periodValue, searchText) => {
-		const response = await fetch(this.getUrl(`/orders/`), {
-			headers: this.getJsonHeaders(),
-			body: JSON.stringify({
-				'period-value': periodValue,
-				'search-text': searchText
-			})
-		})
+		const response = await fetch(
+			this.getUrl(
+				`/orders/` +
+					this.buildQueryString({
+						'period-value': periodValue,
+						'search-text': searchText
+					})
+			),
+			{
+				headers: this.getJsonHeaders()
+			}
+		)
 		switch (response.status) {
 			case 200:
 				return await response.json()
