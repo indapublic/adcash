@@ -35,10 +35,9 @@ class UsersFixtures extends Fixture implements ContainerAwareInterface
          * @var \AppBundle\Entity\User
          */
         $user = $manager->createUser();
-
         $user
             ->setUsername('root')
-            ->setEmail('noreply@mail.com')
+            ->setEmail('noreply@website.com')
             ->setRoles(array('ROLE_SUPER_ADMIN'))
             ->setEnabled(true)
         ;
@@ -53,5 +52,40 @@ class UsersFixtures extends Fixture implements ContainerAwareInterface
         $manager->updateUser($user);
         unset($user);
 
+        $user = $manager->createUser();
+        $user
+            ->setUsername('Test user')
+            ->setEmail('user@website.com')
+            ->setRoles(array('ROLE_USER'))
+            ->setEnabled(true)
+        ;
+
+        $encoder = $factory->getEncoder($user);
+        $password = $encoder->encodePassword('user', $user->getSalt());
+
+        $user
+            ->setPassword($password)
+        ;
+
+        $manager->updateUser($user);
+        unset($user);
+
+        $user = $manager->createUser();
+        $user
+            ->setUsername('Test vendor')
+            ->setEmail('vendor@website.com')
+            ->setRoles(array('ROLE_USER'))
+            ->setEnabled(true)
+        ;
+
+        $encoder = $factory->getEncoder($user);
+        $password = $encoder->encodePassword('vendor', $user->getSalt());
+
+        $user
+            ->setPassword($password)
+        ;
+
+        $manager->updateUser($user);
+        unset($user);
     }
 }
