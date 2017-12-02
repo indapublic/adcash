@@ -330,7 +330,10 @@ class Orders extends Component {
 										<Link
 											to={`orders/${order.id}`}
 											onClick={() => {
-												this.props.ordersActions.setOrder(order)
+												this.props.ordersActions.setOrder({
+													...order,
+													error: null
+												})
 											}}
 										>
 											Edit
