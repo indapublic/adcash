@@ -58,6 +58,12 @@
         ],
         "post-update-cmd": [
             "@symfony-scripts"
+        ],
+        "server": [
+            "bin/console server:run -v"
+        ],
+        "test": [
+            "phpunit"
         ]
     },
     "config": {
