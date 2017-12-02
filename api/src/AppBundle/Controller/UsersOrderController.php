@@ -29,7 +29,7 @@ class UsersOrderController extends Controller
      *
      * @return JsonResponse
      */
-    public function getOrdersAction()
+    public function getOrdersAction(Request $request)
     {
         /**
          * @var EntityManager
@@ -39,7 +39,10 @@ class UsersOrderController extends Controller
         /**
          * @var UserOrder[]
          */
-        $orders = $em->getRepository(UserOrder::class)->findAll();
+        $orders = $em->getRepository(UserOrder::class)->getOrders(array(
+            'period-value' => $request->get('period-value'),
+            'search-text' => $request->get('search-text')
+        ));
 
         return new JsonResponse(
             $this->container->get('adcash.util.serializer')->serialize($orders)
