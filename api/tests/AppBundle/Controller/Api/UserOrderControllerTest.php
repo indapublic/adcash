@@ -8,21 +8,20 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class UserOrderControllerTest extends WebTestCase
 {
-    public function testRedirection()
+    public function testOrders()
     {
         $client = static::createClient();
+        //  Redirect on GET `/api/orders`
         $client->request('GET', '/api/orders');
         $this->assertEquals(301, $client->getResponse()->getStatusCode());
-    }
-
-    public function testGetOrders()
-    {
-        $client = static::createClient();
+        //  HTTP 200 OK on GET `/api/orders/`
         $client->request('GET', '/api/orders/');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-        $data = \GuzzleHttp\json_decode($client->getResponse()->getContent(), true);
-        $this->assertNotCount(0, $data);
-        $this->assertArrayHasKey('product', $data[0]);
+        //  HTTP 404 Not Found on GET `/api/orders/NotExisting`
+        $client->request('GET', '/api/orders/NotExisting');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+        //  HTTP 404 Bad Request on empty POST `/api/orders/`
+        $client->request('POST', '/api/orders/');
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
     }
-
 }
