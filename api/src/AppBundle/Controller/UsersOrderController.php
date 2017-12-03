@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
@@ -23,6 +24,8 @@ class UsersOrderController extends Controller
 {
     /**
      * Get orders.
+     *
+     * @param Request $request
      *
      * @Route("/", name="get_orders")
      * @Method("GET")
@@ -50,6 +53,36 @@ class UsersOrderController extends Controller
     }
 
     /**
+     * Get order.
+     *
+     * @param string $orderId
+     *
+     * @Route("/{orderId}", name="get_order")
+     * @Method("GET")
+     *
+     * @return JsonResponse
+     */
+    public function getOrderAction(string $orderId)
+    {
+        /**
+         * @var EntityManager
+         */
+        $em = $this->getDoctrine()->getManager();
+
+        /**
+         * @var UserOrder
+         */
+        $order = $em->getRepository(UserOrder::class)->find($orderId);
+        if (!$order instanceof UserOrder) {
+            throw new NotFoundHttpException(sprintf('Order %s not found', $orderId));
+        }
+
+        return new JsonResponse(
+            $this->container->get('adcash.util.serializer')->serialize($order)
+        );
+    }
+
+    /**
      * Add new order.
      *
      * @param Request $request
@@ -69,6 +102,16 @@ class UsersOrderController extends Controller
         $userId = $request->get('user-id');
         $productId = $request->get('product-id');
         $quantity = $request->get('quantity');
+
+        if (!$userId) {
+            throw new BadRequestHttpException(sprintf('User should be defined'));
+        }
+        if (!$productId) {
+            throw new BadRequestHttpException(sprintf('Product should be defined'));
+        }
+        if (!$quantity) {
+            throw new BadRequestHttpException(sprintf('Quantity should be defined'));
+        }
 
         /**
          * @var Product
