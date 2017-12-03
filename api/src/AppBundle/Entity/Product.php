@@ -9,8 +9,8 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * Product
  *
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\ProductRepository")
  * @ORM\Table(name="products")
- * @ORM\Entity()
  */
 class Product
 {
@@ -54,6 +54,8 @@ class Product
      * @var bool
      *
      * @ORM\Column(name="discount", type="boolean")
+     *
+     * @Groups({"default"})
      */
     private $discount;
 

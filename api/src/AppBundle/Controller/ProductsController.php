@@ -20,10 +20,14 @@ class ProductsController extends Controller
     /**
      * Get products.
      *
+     * @param Request $request
+     *
      * @Route("/", name="get_products")
      * @Method("GET")
+     *
+     * @return JsonResponse
      */
-    public function getProductsAction()
+    public function getProductsAction(Request $request)
     {
         /**
          * @var EntityManager
@@ -33,7 +37,9 @@ class ProductsController extends Controller
         /**
          * @var Product[]
          */
-        $products = $em->getRepository(Product::class)->findAll();
+        $products = $em->getRepository(Product::class)->getProducts(array(
+            'name' => $request->get('name')
+        ));
 
         return new JsonResponse(
             $this->container->get('adcash.util.serializer')->serialize($products)
