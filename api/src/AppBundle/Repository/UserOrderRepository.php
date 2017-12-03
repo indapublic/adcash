@@ -4,11 +4,12 @@ namespace AppBundle\Repository;
 
 use Doctrine\ORM\Query\Expr\Join;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * UserOrderRepository
  */
-class UserOrderRepository extends \Doctrine\ORM\EntityRepository
+class UserOrderRepository extends EntityRepository
 {
     public function getOrders($criteria = array()) {
         $periodValue = $criteria['period-value'];
@@ -42,7 +43,7 @@ class UserOrderRepository extends \Doctrine\ORM\EntityRepository
                 break;
         }
 
-        if (strlen($searchText) > 0) {
+        if (!!$searchText && strlen($searchText) > 0) {
             $qb
                 ->innerJoin('uo.product', 'p', Join::WITH)
                 ->innerJoin('uo.user', 'u', Join::WITH)
