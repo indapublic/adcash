@@ -20,10 +20,14 @@ class UsersController extends Controller
     /**
      * Get users.
      *
+     * @param Request $request
+     *
      * @Route("/", name="get_users")
      * @Method("GET")
+     *
+     * @return JsonResponse
      */
-    public function getUsersAction()
+    public function getUsersAction(Request $request)
     {
         /**
          * @var EntityManager
@@ -33,7 +37,9 @@ class UsersController extends Controller
         /**
          * @var User[]
          */
-        $users = $em->getRepository(User::class)->findAll();
+        $users = $em->getRepository(User::class)->getUsers(array(
+            'name' => $request->get('name')
+        ));
 
         return new JsonResponse(
             $this->container->get('adcash.util.serializer')->serialize($users)
