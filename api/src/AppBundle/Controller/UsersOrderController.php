@@ -112,7 +112,6 @@ class UsersOrderController extends Controller
         if (!$quantity) {
             throw new BadRequestHttpException(sprintf('Quantity should be defined'));
         }
-
         if ($quantity <= 0) {
             throw new BadRequestHttpException(sprintf('Quantity should be positive'));
         }
@@ -181,6 +180,19 @@ class UsersOrderController extends Controller
         $userId = $request->get('user-id');
         $productId = $request->get('product-id');
         $quantity = $request->get('quantity');
+
+        if (!$userId) {
+            throw new BadRequestHttpException(sprintf('User should be defined'));
+        }
+        if (!$productId) {
+            throw new BadRequestHttpException(sprintf('Product should be defined'));
+        }
+        if (!$quantity) {
+            throw new BadRequestHttpException(sprintf('Quantity should be defined'));
+        }
+        if ($quantity <= 0) {
+            throw new BadRequestHttpException(sprintf('Quantity should be positive'));
+        }
 
         /**
          * @var Product
