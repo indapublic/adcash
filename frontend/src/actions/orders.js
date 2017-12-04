@@ -144,6 +144,7 @@ export const saveOrder = () => async (dispatch, getState) => {
 				error: 'Quantity should be positive'
 			})
 		)
+		success = false
 	}
 	if (!success) return null
 	try {
