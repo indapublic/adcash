@@ -137,6 +137,14 @@ export const saveOrder = () => async (dispatch, getState) => {
 		)
 		success = false
 	}
+	if (order.quantity <= 0) {
+		dispatch(
+			setOrder({
+				isSubmitting: false,
+				error: 'Quantity should be positive'
+			})
+		)
+	}
 	if (!success) return null
 	try {
 		const savedOrder = await ordersApi().saveOrder({
