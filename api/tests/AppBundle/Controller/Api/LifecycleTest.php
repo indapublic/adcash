@@ -56,8 +56,17 @@ class LifecycleTest extends WebTestCase
         $existingOrder = \GuzzleHttp\json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('id', $existingOrder);
         /**
-         * Update existing order.
+         * Wrong update existing order.
          */
+        $client->request('PUT', '/api/orders/' . $existingOrder['id'], array(
+            'user-id' => $userId,
+            'product-id' => $productId,
+            'quantity' => -1
+        ));
+        /**
+         * Correct update existing order.
+         */
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
         $client->request('PUT', '/api/orders/' . $existingOrder['id'], array(
             'user-id' => $userId,
             'product-id' => $productId,
