@@ -20,7 +20,7 @@ class UserOrderControllerTest extends WebTestCase
         //  HTTP 404 Not Found on GET `/api/orders/NotExisting`
         $client->request('GET', '/api/orders/NotExisting');
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
-        //  HTTP 404 Bad Request on empty POST `/api/orders/`
+        //  HTTP 400 Bad Request on empty POST `/api/orders/`
         $client->request('POST', '/api/orders/');
         $this->assertEquals(400, $client->getResponse()->getStatusCode());
     }

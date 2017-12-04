@@ -28,6 +28,15 @@ class LifecycleTest extends WebTestCase
         $this->assertArrayHasKey('id', $users[0]);
         $userId = $users[0]['id'];
         /**
+         * Error on negative quantity.
+         */
+        $client->request('POST', '/api/orders/', array(
+            'user-id' => $userId,
+            'product-id' => $productId,
+            'quantity' => -1
+        ));
+        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+        /**
          * Add new order.
          */
         $client->request('POST', '/api/orders/', array(

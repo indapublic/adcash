@@ -113,6 +113,10 @@ class UsersOrderController extends Controller
             throw new BadRequestHttpException(sprintf('Quantity should be defined'));
         }
 
+        if ($quantity <= 0) {
+            throw new BadRequestHttpException(sprintf('Quantity should be positive'));
+        }
+
         /**
          * @var Product
          */
