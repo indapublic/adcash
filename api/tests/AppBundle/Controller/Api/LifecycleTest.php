@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\AppBundle\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class LifecycleTest extends WebTestCase
 {
@@ -35,7 +36,7 @@ class LifecycleTest extends WebTestCase
             'product-id' => $productId,
             'quantity' => -1
         ));
-        $this->assertEquals(400, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $client->getResponse()->getStatusCode());
         /**
          * Add new order.
          */
@@ -44,7 +45,7 @@ class LifecycleTest extends WebTestCase
             'product-id' => $productId,
             'quantity' => 1
         ));
-        $this->assertEquals(201, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_CREATED, $client->getResponse()->getStatusCode());
         $addedOrder = \GuzzleHttp\json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('id', $addedOrder);
         /**
@@ -62,11 +63,11 @@ class LifecycleTest extends WebTestCase
             'product-id' => $productId,
             'quantity' => 99
         ));
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         /**
          * Delete existing order.
          */
         $client->request('DELETE', '/api/orders/'. $existingOrder['id']);
-        $this->assertEquals(204, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
     }
 }

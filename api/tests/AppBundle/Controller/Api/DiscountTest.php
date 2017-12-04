@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\AppBundle\Controller\Api;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpFoundation\Response;
 
 class DiscountTest extends WebTestCase
 {
@@ -15,14 +16,14 @@ class DiscountTest extends WebTestCase
          * Get users.
          */
         $client->request('GET', '/api/users/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $users = \GuzzleHttp\json_decode($client->getResponse()->getContent(), true);
         $this->assertNotCount(0, $users);
         /**
          * Get products.
          */
         $client->request('GET', '/api/products/');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
         $products = \GuzzleHttp\json_decode($client->getResponse()->getContent(), true);
         $this->assertNotCount(0, $products);
         $quantity = 3;
@@ -35,14 +36,14 @@ class DiscountTest extends WebTestCase
                 'product-id' => $product['id'],
                 'quantity' => $quantity
             ));
-            $this->assertEquals(201, $client->getResponse()->getStatusCode());
+            $this->assertEquals(Response::HTTP_CREATED, $client->getResponse()->getStatusCode());
             $addedOrder = \GuzzleHttp\json_decode($client->getResponse()->getContent(), true);
             $this->assertArrayHasKey('id', $addedOrder);
             /**
              * Get order.
              */
             $client->request('GET', '/api/orders/' . $addedOrder['id']);
-            $this->assertEquals(200, $client->getResponse()->getStatusCode());
+            $this->assertEquals(Response::HTTP_OK, $client->getResponse()->getStatusCode());
             $existingOrder = \GuzzleHttp\json_decode($client->getResponse()->getContent(), true);
             /**
              * Check all fields are exist.
@@ -66,7 +67,7 @@ class DiscountTest extends WebTestCase
              * Delete order.
              */
             $client->request('DELETE', '/api/orders/'. $existingOrder['id']);
-            $this->assertEquals(204, $client->getResponse()->getStatusCode());
+            $this->assertEquals(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
         }
     }
 }
